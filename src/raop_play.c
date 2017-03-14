@@ -358,6 +358,7 @@ int main(int argc, char *argv[]) {
 
 	if (start || wait) {
 		__u64 now = get_ntp(NULL);
+		start = ((start) << 32);
 
 		start_at = (start ? start : now) + MS2NTP(wait) -
 					TS2NTP(latency, raopcl_sample_rate(raopcl));
@@ -433,6 +434,7 @@ int main(int argc, char *argv[]) {
 			default: break;
 			}
 		}
+		usleep(10);
 
 	} while (n || raopcl_queued_frames(raopcl));
 

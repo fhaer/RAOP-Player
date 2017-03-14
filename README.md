@@ -1,5 +1,24 @@
 # RAOP-Player
-RAOP player and library (AirPlay)
+## RAOP player and library (AirPlay)
+
+This is a fork of philippe44's RAOP (airplay) project. It makes two changes:
+1. Busy waiting is throtteled to allow for a lower cpu usage (on a raspberry pi 3 6% instead of 100%)
+2. A more sane input format for the -n parameter, which can be used to specify a time to start the audio stream. The new format is NTP time in whole seconds value with no decimal places, which can be calculated from a date value with nano-second precision as follows:
+   printf("%.0f", (((70*365 + 17)*86400*1000000000 + `date +%s%N` + 3*1000000000)/1000000000))
+
+## Build instructions:
+
+Valgrind is required. Copy or link to it and make:
+cp -a /usr/lib/valgrind .
+cp -a /usr/include/valgrind include
+mv include valgrind
+cd RAOP-Player
+make clean
+rm -rf bin
+make -f Makefile.x86-64
+cp bin/raop_play-x86-64 /usr/bin/raop_play
+
+## Original README:
 
 This is a RAOP (airplay) player and library for the v2 protocol (with synchro). It works for Windows, OSX, Linux x86 and ARM. 
 There is a small player can can play raw pcm form any file or stdin (useful for use pipes with a decoder like lame, flac or ffmpeg)
